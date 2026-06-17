@@ -1,0 +1,27 @@
+name: Tests
+
+on:
+  workflow_call:
+
+jobs:
+  tests:
+    name: Run tests with vitest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup node js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Install dependancies
+        run: npm ci --no-audit --no-found
+      - name: Run tests
+        run: npm run test:run
+        env:
+          CI: true
+          NODE_ENV: true
+      - name: Test Compilation
+        run: npm run build
+        env:
+          SKIP_ENV_VALIDATION: true
+          NODE_ENV: production
